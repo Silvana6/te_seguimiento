@@ -1,0 +1,15 @@
+create table estudiantes (
+	id int(11) auto_increment primary key,
+	nombre varchar(50),
+	apellidos varchar(50),
+	email varchar(100),
+	fecha_nacimiento date
+);
+
+select * from estudiantes;
+
+insert into estudiantes (nombre, apellidos, email, fecha_nacimiento) values ('ARIADNE', 'DIAZ MILER', 'aridm@mail.com', '2002-12-06');
+insert into estudiantes (nombre, apellidos, email, fecha_nacimiento) values ('ISABELLA', 'GUZMAN QUIROGA', 'isagq@mail.com', '2003-11-15');
+insert into estudiantes (nombre, apellidos, email, fecha_nacimiento) values ('RAFAEL', 'SUAREZ HIDALGO', 'rafash@mail.com', '2002-10-01');
+insert into estudiantes (nombre, apellidos, email, fecha_nacimiento) values ('CESARE', 'JIMENEZ CONDE', 'cesarejc@mail.com', '2002-08-20');
+insert into estudiantes (nombre, apellidos, email, fecha_nacimiento) values ('ALFONSO', 'LINARES VILLA', 'alfonsolv@mail.com', '2002-09-19');
