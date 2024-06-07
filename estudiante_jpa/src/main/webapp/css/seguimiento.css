@@ -1,7 +1,5 @@
 body {
     background-color: #f5f5dc;
-    margin: 0;
-    padding: 0;
     font-family: Arial, sans-serif;
     padding: 50px 20px;
 }
@@ -10,6 +8,12 @@ h1 {
     color: #333;
     text-align: center;
     margin-bottom: 30px;
+}
+
+.container {
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 30px;
 }
 
 table {
@@ -40,20 +44,4 @@ td a {
 
 td a:hover {
     color: #0056b3;
-}
-
-.new-link {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s;
-}
-
-.new-link:hover {
-    background-color: #0056b3;
 }

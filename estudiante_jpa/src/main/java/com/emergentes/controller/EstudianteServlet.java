@@ -7,6 +7,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,36 +21,41 @@ public class EstudianteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        BeanEstudiante daoEstudiante = new BeanEstudiante();
+        BeanEstudiante dao = new BeanEstudiante();
 
-        Estudiante est = new Estudiante();
+        Estudiante estudiante = new Estudiante();
         int id;
 
         String action = (request.getParameter("action") != null) ? request.getParameter("action") : "view";
-
+        
+        System.out.println(action);
+        
         switch (action) {
             case "add":
-                request.setAttribute("estudiante", est);
+                request.setAttribute("estudiante", estudiante);
                 request.getRequestDispatcher("Registro.jsp").forward(request, response);
                 break;
 
             case "edit":
                 id = Integer.parseInt(request.getParameter("id"));
-                est = daoEstudiante.buscar(id);
-                request.setAttribute("estudiante", est);
+                estudiante = dao.buscar(id);
+                request.setAttribute("estudiante", estudiante);
                 request.getRequestDispatcher("Registro.jsp").forward(request, response);
                 break;
 
             case "dele":
                 id = Integer.parseInt(request.getParameter("id"));
-                daoEstudiante.eliminar(id);
-                response.sendRedirect("EstudianteServlet");
+                dao.eliminar(id);
+                response.sendRedirect(request.getContextPath() + "/EstudianteServlet");
                 break;
 
             case "view":
-                List<Estudiante> lista = daoEstudiante.listarTodos();
-                request.setAttribute("estudiante", lista);
+                List<Estudiante> lista = dao.listarTodos();
+                request.setAttribute("estudiantes", lista);
                 request.getRequestDispatcher("Seguimiento.jsp").forward(request, response);
+                break;
+                
+            default:
                 break;
         }
     }
@@ -56,36 +63,55 @@ public class EstudianteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        BeanEstudiante daoEstudiante = new BeanEstudiante();
 
         int id = Integer.parseInt(request.getParameter("id"));
         String nombre = request.getParameter("nombre");
         String apellidos = request.getParameter("apellidos");
         String email = request.getParameter("email");
-        String fechaNac = request.getParameter("fechaNacimiento");
+        String fechaNacimiento = request.getParameter("fechaNacimiento");
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        Date fechaN;
-        try {
-            fechaN = sdf.parse(fechaNac);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return;
-        }
+        Estudiante estudiante = new Estudiante();
+        
+        estudiante.setId(id);
+        estudiante.setNombre(nombre);
+        estudiante.setApellidos(apellidos);
+        estudiante.setEmail(email);
+        estudiante.setFechaNacimiento(convertirFecha(fechaNacimiento));
 
-        Estudiante est = new Estudiante();
-        est.setId(id);
-        est.setNombre(nombre);
-        est.setApellidos(apellidos);
-        est.setEmail(email);
-        est.setFechaNacimiento(fechaN);
-
-        if (id > 0) {
-            daoEstudiante.editar(est);
+        BeanEstudiante dao = new BeanEstudiante();
+        
+        if (id == 0) {
+            
+            try {
+                dao.insertar(estudiante);
+                response.sendRedirect(request.getContextPath() + "/EstudianteServlet");
+            } catch (Exception ex) {
+                System.out.println("Error " + ex.getMessage());
+            }
         } else {
-            daoEstudiante.insertar(est);
+            
+            try {
+                dao.editar(estudiante);
+                response.sendRedirect(request.getContextPath() + "/EstudianteServlet");
+            } catch (Exception e) {
+                System.out.println("Error " + e.getMessage());
+            }
         }
 
-        response.sendRedirect("EstudianteServlet");
+    }
+    
+    public Date convertirFecha(String fecha){
+        Date fechaBD = null;
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        
+        java.util.Date fechaTMP;
+        try {
+            fechaTMP = formato.parse(fecha);
+            fechaBD = new Date(fechaTMP.getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(EstudianteServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+              
+        return fechaBD;
     }
 }

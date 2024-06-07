@@ -6,6 +6,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>Seguimiento.jsp</welcome-file>
+        <welcome-file>EstudianteServlet</welcome-file>
     </welcome-file-list>
 </web-app>

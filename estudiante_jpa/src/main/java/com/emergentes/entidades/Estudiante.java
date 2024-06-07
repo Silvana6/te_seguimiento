@@ -56,17 +56,17 @@ public class Estudiante implements Serializable {
 
     public Estudiante() {
     }
-
-    public Estudiante(Integer id, String nombre, String apellidos, String email, Date fechaNacimiento) {
-        this.id = 0;
-        this.nombre = "";
-        this.apellidos = "";
-        this.email = "";
-        this.fechaNacimiento = fechaNacimiento;
-    }
     
     public Estudiante(Integer id) {
         this.id = id;
+    }
+
+    public Estudiante(Integer id, String nombre, String apellidos, String email, Date fechaNacimiento) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public Integer getId() {
